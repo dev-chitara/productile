@@ -1,0 +1,32 @@
+# docker-compose.yml
+name: myapp
+version: '3.8'
+
+services:
+  productile:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    hostname: productile
+    container_name: productile
+    image: productile:latest
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    hostname: postgres
+    platform: linux/amd64
+    environment:
+        POSTGRES_DB: local_db
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+    ports:
+        - "5433:5432"
+    volumes:
+        - .:/data
