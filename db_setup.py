@@ -5,7 +5,7 @@ from common import DATABASE_URL
 
 engine = create_engine(DATABASE_URL)
 
-Session = sessionmaker(
+SessionLocal = sessionmaker(
     autocommit=False,
     autoflush=False,
     bind=engine
@@ -14,7 +14,7 @@ Session = sessionmaker(
 Base = declarative_base()
 
 def get_db():
-    db = Session()
+    db = SessionLocal()
     try:
         return db
     finally:
