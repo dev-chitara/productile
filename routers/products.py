@@ -16,6 +16,7 @@ async def create_products(product: ProductSchema, db:Session=Depends(get_db)):
     db.commit()
     return product_object
 
+
 @router.get("/products/{product_id}", status_code=status.HTTP_200_OK)
 async def get_product(product_id: uuid.UUID, db:Session=Depends(get_db)):
     product_object = db.query(Product).filter(Product.id == product_id).first()
