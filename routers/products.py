@@ -1,0 +1,50 @@
+import uuid
+from fastapi import HTTPException, Depends, status
+from sqlalchemy.orm import Session
+from typing import Annotated
+from models.products import Product
+from schemas.products import ProductSchema
+from db_setup import get_db, SessionLocal
+from main import app
+
+
+db_dependancy = Annotated[Session, Depends(get_db)]
+
+
+@app.post("/products/", status_code=status.HTTP_201_CREATED)
+async def create_products(product: ProductSchema, db: db_dependancy):
+    product_object = Product(**product.model_dump())
+    db.add(product_object)
+    db.commit()
+
+
+@app.get("/products/{product_id}", status_code=status.HTTP_200_OK)
+async def get_product(product_id: uuid.UUID, db: db_dependancy):
+    product_object = db.query(Product).filter(Product.id == product_id).first()
+
+    if product_object is None:
+        raise HTTPException(status_code=404, detail="Product was not found!")
+    return product_object
+
+
+@app.patch("/products/{product_id}", status_code=status.HTTP_200_OK)
+async def update_product(product_id: uuid.UUID, product: ProductSchema, db: db_dependancy):
+    update_product_data = product.model_dump()
+    update_product_data.pop("id")
+
+    product_query = db.query(Product).filter(Product.id == product_id)
+    product_object = product_query.first()
+    product_query.update(update_product_data)
+    db.commit()
+    db.refresh(product_object)
+
+
+@app.delete("/products/{product_id}", status_code=status.HTTP_200_OK)
+async def delete_product(product_id: uuid.UUID, db: db_dependancy):
+    product_object = db.query(Product).filter(Product.id == product_id).first()
+
+    if product_object is None:
+        raise HTTPException(status_code=404, detail="Product was not found!")
+    db.delete(product_id)
+    db.commit()
+
