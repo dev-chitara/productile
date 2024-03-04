@@ -1,5 +1,5 @@
 import uuid
-from fastapi import HTTPException, Depends, status,APIRouter
+from fastapi import HTTPException, Depends, status, APIRouter
 from sqlalchemy.orm import Session
 from models.products import Product
 from schemas.products import ProductSchema
