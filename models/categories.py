@@ -2,7 +2,7 @@ import uuid
 from sqlalchemy import Column, UUID, String, Text
 from sqlalchemy.orm import Relationship
 from db_setup import Base
-from base import TimeStamp
+from models.base import TimeStamp
 
 
 class Category(TimeStamp):

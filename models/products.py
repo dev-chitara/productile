@@ -2,7 +2,7 @@ import uuid
 from sqlalchemy import Column, Integer, UUID, String, DECIMAL, Text, ForeignKey
 from sqlalchemy.orm import Relationship
 from db_setup import Base
-from base import TimeStamp
+from models.base import TimeStamp
 
 
 class Product(TimeStamp):

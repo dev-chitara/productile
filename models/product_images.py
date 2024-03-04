@@ -1,7 +1,7 @@
 import uuid 
 from sqlalchemy import Column, UUID, String, ForeignKey
 from db_setup import Base
-from base import TimeStamp
+from models.base import TimeStamp
 
 
 class ProductImage(TimeStamp):
