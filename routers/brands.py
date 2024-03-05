@@ -23,6 +23,7 @@ async def get_brand(brand_id: uuid.UUID, db: Session=Depends(get_db)):
 
     if brand_object is None:
         raise HTTPException(status_code=404, detail="Brand does not exist")
+    
     return brand_object
 
 
@@ -35,6 +36,7 @@ async def update_brand(brand_id: uuid.UUID, brand: BrandSchema, db: Session=Depe
     
     if brand_object is None:
         raise HTTPException(status_code=404, detail="Brand does not exist")
+    
     brand_query.update(update_brand_data)
     db.commit()
     db.refresh(brand_object)
@@ -47,6 +49,7 @@ async def delete_brand(brand_id: uuid.UUID, db: Session=Depends(get_db)):
 
     if brand_object is None:
         raise HTTPException(status_code=404, detail="Brand does not exist")
+    
     db.delete(brand_object)
     db.commit()
     return True

@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from datetime import datetime
 
 
-class ProductImage(BaseModel):
+class ProductImageSchema(BaseModel):
     id: uuid.UUID
     url: str
     product_id: uuid.UUID

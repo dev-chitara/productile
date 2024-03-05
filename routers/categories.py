@@ -23,6 +23,7 @@ async def get_category(category_id: uuid.UUID, db: Session=Depends(get_db)):
 
     if category_object is None:
         raise HTTPException(status_code=404, detail="Category does not exist")
+    
     return category_object
 
 
@@ -48,6 +49,7 @@ async def delete_category(category_id: uuid.UUID, db: Session=Depends(get_db)):
 
     if category_object is None:
         raise HTTPException(status_code=404, detail="Category does not exist")
+    
     db.delete(category_object)
     db.commit()
     return True

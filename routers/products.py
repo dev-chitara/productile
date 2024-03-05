@@ -23,6 +23,7 @@ async def get_product(product_id: uuid.UUID, db: Session=Depends(get_db)):
 
     if product_object is None:
         raise HTTPException(status_code=404, detail="Product was not found!")
+    
     return product_object
 
 
@@ -48,6 +49,7 @@ async def delete_product(product_id: uuid.UUID, db: Session=Depends(get_db)):
 
     if product_object is None:
         raise HTTPException(status_code=404, detail="Product was not found!")
+    
     db.delete(product_object)
     db.commit()
     return True

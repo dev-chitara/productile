@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from routers import products
 from routers import categories
 from routers import brands
+from routers import product_images
 
 
 app = FastAPI(
@@ -17,6 +18,7 @@ app = FastAPI(
 app.include_router(products.router, prefix="/api")
 app.include_router(categories.router, prefix="/api")
 app.include_router(brands.router, prefix="/api")
+app.include_router(product_images.router, prefix="/api")
 
 
 if __name__ == "__main__":
