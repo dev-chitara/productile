@@ -1,6 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from routers import products
+from routers import categories
 
 
 app = FastAPI(
@@ -13,6 +14,8 @@ app = FastAPI(
 )
 
 app.include_router(products.router, prefix="/api")
+app.include_router(categories.router, prefix="/api")
+
 
 if __name__ == "__main__":
     uvicorn.run(
