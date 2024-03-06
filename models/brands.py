@@ -8,11 +8,11 @@ from models.base import TimeStamp
 class Brand(TimeStamp):
     __tablename__ = "brands"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, uniqe=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String(80), nullable=False)
     description = Column(Text, nullable=False)
 
-    products = Relationship("Product", backref="products")
+    products = Relationship("Product")
 
     def __str__(self):
         return f"{self.name}"
