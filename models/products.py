@@ -14,7 +14,7 @@ class Product(TimeStamp):
     price = Column(Integer, nullable=False)
     quantity_available = Column(Integer, nullable=False)
     category_id = Column(UUID, ForeignKey("categories.id", ondelete="CASCADE"))
-    brand_id = Column(UUID, ForeignKey("brands.id",ondelete="CASCADE"))
+    brand_id = Column(UUID, ForeignKey("brands.id", ondelete="CASCADE"))
 
     product_images = Relationship("ProductImage")
     brand = Relationship("Brand", backref="brands")
