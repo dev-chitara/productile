@@ -1,5 +1,4 @@
 # docker-compose.yml
-name: myapp
 version: '3.8'
 
 services:
@@ -8,6 +7,7 @@ services:
       context: .
       dockerfile: Dockerfile
     hostname: productile
+    platform: linux/amd64
     container_name: productile
     image: productile:latest
     env_file:

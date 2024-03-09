@@ -9,7 +9,13 @@ from db_setup import get_db
 router = APIRouter(tags=["Product API"])
 
 
-@router.post("/products/", status_code=status.HTTP_201_CREATED)
+@router.get("/products", status_code=status.HTTP_200_OK)
+async def fetch_products(db: Session=Depends(get_db)):
+    product_objects = db.query(Product).all()
+    return product_objects
+
+
+@router.post("/products", status_code=status.HTTP_201_CREATED)
 async def create_products(product: ProductSchema, db: Session=Depends(get_db)):
     product_object = Product(**product.model_dump())
     db.add(product_object)

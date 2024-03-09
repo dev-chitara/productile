@@ -12,7 +12,7 @@ class Category(TimeStamp):
     name = Column(String(80), nullable=False)
     description = Column(Text, nullable=False)
 
-    products = Relationship("Product")
+    products = Relationship("Product", backref="categories")
 
     def __str__(self):
         return f"{self.name}"
