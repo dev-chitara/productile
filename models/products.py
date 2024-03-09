@@ -16,7 +16,7 @@ class Product(TimeStamp):
     category_id = Column(UUID, ForeignKey("categories.id", ondelete="CASCADE"))
     brand_id = Column(UUID, ForeignKey("brands.id", ondelete="CASCADE"))
 
-    product_images = Relationship("ProductImage", backref="product")
+    product_images = Relationship("ProductImage", backref="products")
 
     def __str__(self):
         return f"{self.name} {self.price}"

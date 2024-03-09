@@ -52,4 +52,4 @@ async def delete_product_image(product_image_id: uuid.UUID, db: Session=Depends(
     
     db.delete(product_image_object)
     db.commit()
-    return True 
+    return {"Deleted":True} 

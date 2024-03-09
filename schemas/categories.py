@@ -20,7 +20,7 @@ class UpdateCategorySchema(BaseCategorySchema):
 class GetCategorySchema(BaseCategorySchema):
     id: UUID
     created_at: datetime
-    updated_at: datetime | None
+    updated_at: datetime | None=None
 
 
     class Config:

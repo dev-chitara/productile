@@ -30,7 +30,7 @@ async def get_category(category_id: uuid.UUID, db: Session=Depends(get_db)):
     category_object = db.query(Category).filter(Category.id == category_id).first()
 
     if category_object is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category does not exist")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"message": "Category does not exist"})
     
     return category_object
 
@@ -56,8 +56,8 @@ async def delete_category(category_id: uuid.UUID, db: Session=Depends(get_db)):
     category_object = db.query(Category).filter(Category.id == category_id).first()
 
     if category_object is None:
-        raise HTTPException(status_code=404, detail="Category does not exist")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"message": "Category does not exist"})
     
     db.delete(category_object)
     db.commit()
-    return True
+    return {"Deleted":True}
