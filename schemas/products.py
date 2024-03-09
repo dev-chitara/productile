@@ -32,4 +32,3 @@ class GetProductSchema(BaseProductSchema):
 
     class Config:
         from_attributes = True
-    

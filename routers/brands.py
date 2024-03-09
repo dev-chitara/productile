@@ -1,6 +1,6 @@
 import uuid
 from typing import List
-from fastapi import HTTPException, Depends, status, APIRouter
+from fastapi import HTTPException, Depends, status, APIRouter, Request
 from sqlalchemy.orm import Session
 from models.brands import Brand
 from schemas.brands import GetBrandSchema, CreateBrandSchema,UpdateBrandSchema
@@ -11,10 +11,17 @@ router = APIRouter(tags=["Brand API"])
 
 
 @router.get("/brands", status_code=status.HTTP_200_OK, response_model=List[GetBrandSchema])
-async def fetch_brands(db: Session=Depends(get_db)):
-    brand_objects = db.query(Brand).all()
-    return brand_objects
+async def fetch_brands(request: Request, db: Session=Depends(get_db)):
 
+    name_query_param = request.query_params.get("name")
+
+    if name_query_param:
+        brand_objects = db.query(Brand).filter(Brand.name.ilike(f'%{name_query_param}%'))
+    else:
+        brand_objects = db.query(Brand).all()
+
+    return brand_objects
+    
 
 @router.post("/brands/", status_code=status.HTTP_201_CREATED, response_model=GetBrandSchema)
 async def create_brands(brand_data: CreateBrandSchema, db: Session=Depends(get_db)):

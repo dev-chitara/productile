@@ -1,6 +1,6 @@
-import uuid
+from uuid import UUID
 from typing import List
-from fastapi import HTTPException, Depends, status, APIRouter
+from fastapi import HTTPException, Depends, status, APIRouter, Request
 from sqlalchemy.orm import Session
 from models.products import Product
 from models.categories import Category
@@ -9,12 +9,35 @@ from schemas.products import GetProductSchema, CreateProductSchema, UpdateProduc
 from db_setup import get_db
 
 
+# http://www.myapp.com/products/1?category_name=Clothing&order=name
+
+
+# http://www.myapp.com - Base URL
+
+# http - Protocal
+# www - Sub Domain
+# myapp.com - Domain
+
+
+# /products/1?category_name=Clothing&order=name - Complete Endpoint
+
+# /products/1 - Endpoint
+# /products - resource or collection name --> GET LIST, POST
+# /1 - Path Params - Particular ID or Targeted Record --> GET SINGLE, PUT, PATCH, DELETE
+# ?category_name=Clothing&order=name& - Query Params - Searching, Sorting, Filtering, Pagination, Column Selection --> GET LIST 
+
+
 router = APIRouter(tags=["Product API"])
 
 
 @router.get("/products", status_code=status.HTTP_200_OK, response_model=List[GetProductSchema])
-async def fetch_products(db: Session=Depends(get_db)):
-    product_objects = db.query(Product).all()
+async def fetch_products(request: Request, db: Session=Depends(get_db)):
+    name_query_param = request.query_params.get("name")
+
+    if name_query_param:
+        product_objects = db.query(Product).filter(Product.name.ilike(f'%{name_query_param}%'))
+    else:
+        product_objects = db.query(Product).all()
     return product_objects
 
 
@@ -28,7 +51,7 @@ async def create_products(product: CreateProductSchema, db: Session=Depends(get_
 
 
 @router.get("/products/{product_id}", status_code=status.HTTP_200_OK, response_model=GetProductSchema)
-async def get_product(product_id: uuid.UUID, db: Session=Depends(get_db)):
+async def get_product(product_id: UUID, db: Session=Depends(get_db)):
     product_object = db.query(Product).filter(Product.id == product_id).first()
 
     if product_object is None:
@@ -38,7 +61,7 @@ async def get_product(product_id: uuid.UUID, db: Session=Depends(get_db)):
 
 
 @router.patch("/products/{product_id}", status_code=status.HTTP_200_OK, response_model=GetProductSchema)
-async def update_product(product_id: uuid.UUID, product: UpdateProductSchema, db: Session=Depends(get_db)):
+async def update_product(product_id: UUID, product: UpdateProductSchema, db: Session=Depends(get_db)):
     update_product_data = product.model_dump(exclude={"id"})
 
     product_query = db.query(Product).filter(Product.id == product_id)
@@ -54,7 +77,7 @@ async def update_product(product_id: uuid.UUID, product: UpdateProductSchema, db
 
 
 @router.delete("/products/{product_id}", status_code=status.HTTP_200_OK)
-async def delete_product(product_id: uuid.UUID, db: Session=Depends(get_db)):
+async def delete_product(product_id: UUID, db: Session=Depends(get_db)):
     product_object = db.query(Product).filter(Product.id == product_id).first()
 
     if product_object is None:
@@ -63,23 +86,3 @@ async def delete_product(product_id: uuid.UUID, db: Session=Depends(get_db)):
     db.delete(product_object)
     db.commit()
     return {"Deleted":True}
-
-
-@router.get("/products/{product_name}", status_code=status.HTTP_200_OK, response_model=List[GetProductSchema])
-async def get_product_by_name(product_name: str, db: Session=Depends(get_db)):
-    product_objects = db.query(Product).filter(Product.name == product_name).all()
-    return product_objects 
-
-
-@router.get("/products/{category_name}", status_code=status.HTTP_200_OK, response_model=List[GetProductSchema])
-async def get_product_by_category_name(category_name: str, db: Session=Depends(get_db)):
-    category_object = db.query(Category).filter(Category.name == category_name).first()
-    category_associated_product_object = category_object.products
-    return category_associated_product_object
-
-
-@router.get("/products/{brand_name}", status_code=status.HTTP_200_OK, response_model=List[GetProductSchema])
-async def get_product_by_brand_name(brand_name: str, db: Session=Depends(get_db)):
-    brand_object = db.query(Brand).filter(Brand.name == brand_name).first()
-    brand_associated_product_object = brand_object.products
-    return brand_associated_product_object

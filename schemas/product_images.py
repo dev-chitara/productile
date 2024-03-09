@@ -1,12 +1,24 @@
-import uuid
+from uuid import UUID
 from pydantic import BaseModel
 from datetime import datetime
 
 
-class ProductImageSchema(BaseModel):
-    id: uuid.UUID
+class BaseProductImageSchema(BaseModel):
     url: str
-    product_id: uuid.UUID
+    product_id: UUID
+
+
+class CreateProductImageSchema(BaseProductImageSchema):
+    pass
+
+
+class UpdateProductImageSchema(BaseProductImageSchema):
+    url: str | None=None
+    product_id: UUID
+
+
+class GetProductImageSchema(BaseProductImageSchema):
+    id: UUID
     created_at: datetime
-    updated_atr: datetime
+    updated_at: datetime | None=None
     

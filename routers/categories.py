@@ -1,6 +1,6 @@
 import uuid
 from typing import List
-from fastapi import HTTPException, Depends, status, APIRouter
+from fastapi import HTTPException, Depends, status, APIRouter, Request
 from sqlalchemy.orm import Session
 from models.categories import Category
 from schemas.categories import GetCategorySchema, CreateCategorySchema, UpdateCategorySchema
@@ -11,8 +11,14 @@ router = APIRouter(tags=["Category API"])
 
 
 @router.get("/categories", status_code=status.HTTP_200_OK, response_model=List[GetCategorySchema]) 
-async def fetch_categories(db: Session=Depends(get_db)):
-    category_objects = db.query(Category).all()
+async def fetch_categories(request:Request, db: Session=Depends(get_db)):
+    name_query_params = request.query_params.get("name")
+
+    if name_query_params:
+        category_objects = db.query(Category).filter(Category.name.ilike(f'%{name_query_params}%'))
+    else:
+        category_objects = db.query(Category).all()
+        
     return category_objects
 
 
