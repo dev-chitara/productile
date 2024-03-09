@@ -65,7 +65,7 @@ async def delete_product(product_id: uuid.UUID, db: Session=Depends(get_db)):
     return {"Deleted":True}
 
 
-@router.get("products/{product_name}", status_code=status.HTTP_200_OK, response_model=List[GetProductSchema])
+@router.get("/products/{product_name}", status_code=status.HTTP_200_OK, response_model=List[GetProductSchema])
 async def get_product_by_name(product_name: str, db: Session=Depends(get_db)):
     product_objects = db.query(Product).filter(Product.name == product_name).all()
     return product_objects 
