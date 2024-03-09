@@ -10,7 +10,7 @@ from db_setup import get_db
 router = APIRouter(tags=["Category API"])
 
 
-@router.get("/categories", status_code=status.HTTP_201_CREATED, response_model=List[GetCategorySchema]) 
+@router.get("/categories", status_code=status.HTTP_200_OK, response_model=List[GetCategorySchema]) 
 async def fetch_categories(db: Session=Depends(get_db)):
     category_objects = db.query(Category).all()
     return category_objects
