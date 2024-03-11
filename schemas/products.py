@@ -18,10 +18,10 @@ class CreateProductSchema(BaseProductSchema):
 class UpdateProductSchema(BaseProductSchema):
     name: str | None=None
     description: str | None=None
-    price: int | None
+    price: int | None=None
     quantity_available: int | None=None
-    category_id: UUID 
-    brand_id: UUID
+    category_id: UUID | None=None
+    brand_id: UUID | None=None
 
 
 class GetProductSchema(BaseProductSchema):
