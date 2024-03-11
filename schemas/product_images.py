@@ -14,7 +14,6 @@ class CreateProductImageSchema(BaseProductImageSchema):
 
 class UpdateProductImageSchema(BaseProductImageSchema):
     url: str | None=None
-    product_id: UUID | None=None
 
 
 class GetProductImageSchema(BaseProductImageSchema):
