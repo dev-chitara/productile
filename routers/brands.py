@@ -43,7 +43,7 @@ async def get_brand(brand_id: uuid.UUID, db: Session=Depends(get_db)):
 
 @router.patch("/brands/{brand_id}", status_code=status.HTTP_200_OK, response_model=GetBrandSchema)
 async def update_brand(brand_id: uuid.UUID, brand_data: UpdateBrandSchema, db: Session=Depends(get_db)):
-    update_brand_data = brand_data.model_dump()
+    update_brand_data = brand_data.model_dump(exclude_none=True)
 
     brand_query = db.query(Brand).filter(Brand.id == brand_id)
     brand_object = brand_query.first()

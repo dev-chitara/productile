@@ -37,7 +37,7 @@ async def get_product_image(product_image_id: UUID, db: Session=Depends(get_db))
 
 @router.patch("/product_images/{product_image_id}", status_code=status.HTTP_200_OK, response_model=GetProductImageSchema)
 async def update_product_image(product_image_id: UUID, product_image: UpdateProductImageSchema, db: Session=Depends(get_db)):
-    update_product_image_data = product_image.model_dump()
+    update_product_image_data = product_image.model_dump(exclude_none=True)
 
     product_image_query = db.query(ProductImage).filter(ProductImage.id == product_image_id)
     product_image_object = product_image_query.first()

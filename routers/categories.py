@@ -43,7 +43,7 @@ async def get_category(category_id: uuid.UUID, db: Session=Depends(get_db)):
 
 @router.patch("/categories/{category_id}", status_code=status.HTTP_200_OK, response_model=GetCategorySchema)
 async def update_category(category_id: uuid.UUID, category_data: UpdateCategorySchema, db: Session=Depends(get_db)):
-    update_category_data = category_data.model_dump()
+    update_category_data = category_data.model_dump(exclude_none=True)
     
     category_query = db.query(Category).filter(Category.id == category_id)
     category_object = category_query.first()
