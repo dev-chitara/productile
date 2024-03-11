@@ -3,8 +3,6 @@ from typing import List
 from fastapi import HTTPException, Depends, status, APIRouter, Request
 from sqlalchemy.orm import Session
 from models.products import Product
-from models.categories import Category
-from models.brands import Brand
 from schemas.products import GetProductSchema, CreateProductSchema, UpdateProductSchema
 from db_setup import get_db
 
