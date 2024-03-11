@@ -62,7 +62,7 @@ async def get_product(product_id: UUID, db: Session=Depends(get_db)):
 
 @router.patch("/products/{product_id}", status_code=status.HTTP_200_OK, response_model=GetProductSchema)
 async def update_product(product_id: UUID, product: UpdateProductSchema, db: Session=Depends(get_db)):
-    update_product_data = product.model_dump(exclude={"id"})
+    update_product_data = product.model_dump()
 
     product_query = db.query(Product).filter(Product.id == product_id)
     product_object = product_query.first()
