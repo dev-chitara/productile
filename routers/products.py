@@ -9,24 +9,6 @@ from schemas.products import GetProductSchema, CreateProductSchema, UpdateProduc
 from db_setup import get_db
 
 
-# http://www.myapp.com/products/1?category_name=Clothing&order=name
-
-
-# http://www.myapp.com - Base URL
-
-# http - Protocal
-# www - Sub Domain
-# myapp.com - Domain
-
-
-# /products/1?category_name=Clothing&order=name - Complete Endpoint
-
-# /products/1 - Endpoint
-# /products - resource or collection name --> GET LIST, POST
-# /1 - Path Params - Particular ID or Targeted Record --> GET SINGLE, PUT, PATCH, DELETE
-# ?category_name=Clothing&order=name& - Query Params - Searching, Sorting, Filtering, Pagination, Column Selection --> GET LIST 
-
-
 router = APIRouter(tags=["Product API"])
 
 
